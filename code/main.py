@@ -110,7 +110,7 @@ class BasicModel(sqlitemodel):
         if not key_type:
             return False
         if type(val) != key_type:
-            raise DatatypeMissmatch("That field must have another datatyoe")
+            raise DatatypeMissmatch("That field must have another datatype")
         return True
 
     def write_to_dict (self): #зачем повторно создавать словарь, где ключ это имя поля, а значение тип данных?
@@ -119,7 +119,7 @@ class BasicModel(sqlitemodel):
             inner_dict[key] = getattr(self, key)
         return inner_dict
 
-class Regular_User(BasicModel):
+class User(BasicModel):
     _FIELDS_MAPPING = {
         "id": int,
         "email": str,
@@ -129,7 +129,7 @@ class Regular_User(BasicModel):
     _TABLE = "Regular_User"
 
 #сущность которая хранит в себе пользователя и просмотренный фильм
-class watched_films(BasicModel):
+class films_user(BasicModel):
     _FIELDS_MAPPING = {
         "user_id": int,
         "film_id": int
@@ -137,30 +137,55 @@ class watched_films(BasicModel):
     _TABLE = "watched_films"
 
 #сущность-таблица всех фильмов в бд с настроениями. Колонка настроений накопительная.
-class FILMS_BLACKHOLE(BasicModel):
+class film(BasicModel):
     _FIELDS_MAPPING = {
         "film_id": int,
         "film_name": str,
-        "mood1": int,
-        "mood2": int,
-        "moodi": int,
+        "description": str,
     }
     _TABLE = "FILMS_BLACKHOLE"
+
+class film_mood(BasicModel):
+    _FIELDS_MAPPING = {
+        "id_mood": int,
+        "id_film": int
+    }
+    _TABLE = "film_mood"
+
+class mood(BasicModel):
+    _FIELDS_MAPPING = {
+        "id": int,
+        "name": str
+    }
+    _TABLE = "mood"
+
+class film_genre(BasicModel):
+    _FIELDS_MAPPING = {
+        "id_genre": int,
+        "id_film": int
+    }
+    _TABLE = "film_genre"
 
 class genre(BasicModel):
     _FIELDS_MAPPING = {
         "id": int,
-        "genre_name": str
+        "name": str
     }
     _TABLE = "genre"
 
-#сущность которая хранит в себе фильм и его жанры
-class FILMS_BLACKGOLE_with_genre(BasicModel):
+class Comment(BasicModel):
     _FIELDS_MAPPING = {
-        "film_id": int,
-        "genre_id": int
+        "id_resourse": int,
+        "id_film": int,
+        "text": str
     }
-    _TABLE = "FILMS_BLACKGOLE_with_genre"
+
+class Resource(BasicModel):
+    _FIELDS_MAPPING = {
+        "id": int,
+        "url": str,
+        "name": str
+    }
 
 "промежуточный контейнер между пользователем и таблицей фильмов, делаем + к настроению фильма"
 # class networking(BasicModel):
@@ -181,6 +206,6 @@ class FILMS_BLACKGOLE_with_genre(BasicModel):
 
 
 
-something = Reqular_User("Baba")
-something.fill_data({"id": "as5q5", "interests": "space", "mobster":"woobster"})
+something = User("Baba")
+something.fill_data({"id": 123 , "username": "space", "modster":"woobster"})
 print(something.__dict__)
