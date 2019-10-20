@@ -73,7 +73,7 @@ class sqlitemodel:
     def get_by_pk(cls, pk):
         record = cls._get_by_pk_mock(pk)
         obj = cls()
-        obj.fill_data(record)   #problem here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        obj.fill_data(record)   #problem here&??
         return obj
 
 
@@ -118,94 +118,3 @@ class BasicModel(sqlitemodel):
         for key in self._FIELDS_MAPPING:
             inner_dict[key] = getattr(self, key)
         return inner_dict
-
-class User(BasicModel):
-    _FIELDS_MAPPING = {
-        "id": int,
-        "email": str,
-        "username": str,
-        "password": str
-    }
-    _TABLE = "Regular_User"
-
-#сущность которая хранит в себе пользователя и просмотренный фильм
-class films_user(BasicModel):
-    _FIELDS_MAPPING = {
-        "user_id": int,
-        "film_id": int
-    }
-    _TABLE = "watched_films"
-
-#сущность-таблица всех фильмов в бд с настроениями. Колонка настроений накопительная.
-class film(BasicModel):
-    _FIELDS_MAPPING = {
-        "film_id": int,
-        "film_name": str,
-        "description": str,
-    }
-    _TABLE = "FILMS_BLACKHOLE"
-
-class film_mood(BasicModel):
-    _FIELDS_MAPPING = {
-        "id_mood": int,
-        "id_film": int
-    }
-    _TABLE = "film_mood"
-
-class mood(BasicModel):
-    _FIELDS_MAPPING = {
-        "id": int,
-        "name": str
-    }
-    _TABLE = "mood"
-
-class film_genre(BasicModel):
-    _FIELDS_MAPPING = {
-        "id_genre": int,
-        "id_film": int
-    }
-    _TABLE = "film_genre"
-
-class genre(BasicModel):
-    _FIELDS_MAPPING = {
-        "id": int,
-        "name": str
-    }
-    _TABLE = "genre"
-
-class Comment(BasicModel):
-    _FIELDS_MAPPING = {
-        "id_resourse": int,
-        "id_film": int,
-        "text": str
-    }
-
-class Resource(BasicModel):
-    _FIELDS_MAPPING = {
-        "id": int,
-        "url": str,
-        "name": str
-    }
-
-"промежуточный контейнер между пользователем и таблицей фильмов, делаем + к настроению фильма"
-# class networking(BasicModel):
-#     _FIELDS_MAPPING = {
-#         "id": str,
-#         "interests": str,
-#         "mood": str
-#         "chosen_films": #list_of_films_id
-#     }
-
-
-# class Reddit(BasicModel):
-#     _FIELDS_MAPPING = {
-#         "API": str,
-#         "https": str,
-#     }
-
-
-
-
-something = User("Baba")
-something.fill_data({"id": 123 , "username": "space", "modster":"woobster"})
-print(something.__dict__)
