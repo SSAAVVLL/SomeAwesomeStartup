@@ -3,9 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link type="text/css" rel="stylesheet" src="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <style>
+        html {font-family: 'Roboto', sans-serif;}
+    </style>
 </head>
 <body>
-{% block header %}{% endblock %}
-{% block content %}{% endblock %}
+    <div style="width: 1000px; margin: 0 auto">
+        <header>
+            <ul style="display: flex; padding: 0; list-style-type: none; font-size: 30px; justify-content: space-between">
+                <li><a style="text-decoration: none" href="/">Main page</a></li>
+                <li><a style="text-decoration: none" href="/team">Our team</a></li>
+            </ul>
+        </header>
+        {% block header %}{% endblock %}
+        {% block content %}{% endblock %}
+    </div>
 </body>
 </html>

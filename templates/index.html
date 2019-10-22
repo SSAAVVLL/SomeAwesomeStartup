@@ -1,9 +1,28 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>SomeAwesomeStartup - main page</h1>
+  <h1>SomeAwesomeStartup - Choose correct film to your mood</h1>
 {% endblock %}
 
 {% block content %}
-  Hello world!
+  <div style="display: flex; justify-content: space-between">
+    <p class="emodji" style="font-size:100px">&#128557;</p>
+    <p class="emodji" style="font-size:100px">&#128552;</p>
+    <p class="emodji" style="font-size:100px">&#128545;</p>
+    <p class="emodji" style="font-size:100px">&#128526;</p>
+    <p class="emodji" style="font-size:100px">&#128525;</p>
+    <p class="emodji" style="font-size:100px">&#128513;</p>
+    <p class="emodji" style="font-size:100px">&#129297;</p>
+  </div>
+  <div style="font-size: 20px; text-align: center">
+    <div>Let's try to pick up film for you</div>
+    <button style="margin-top:30px;
+                  height: 50px;
+                   width: 200px;
+                    font-size: 40px;
+                     background: red;
+                     color: #ffffff;
+                     border: none;
+">Pick up</button>
+  </div>
 {% endblock %}
