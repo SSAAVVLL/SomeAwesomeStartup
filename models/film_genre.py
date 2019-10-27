@@ -3,7 +3,8 @@ from BasicModel import BasicModel
 
 class film_genre(BasicModel):
     _FIELDS_MAPPING = {
-        "id_genre": int,
-        "id_film": int
+        "id": int,
+        "genre_id": int,
+        "film+id": int
     }
     _TABLE = "film_genre"

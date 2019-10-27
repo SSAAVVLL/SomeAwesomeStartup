@@ -23,24 +23,47 @@ class sqlitemodel:
         conn.commit()
         conn.close()
 
-    @classmethod
-    def _create_mapping(cls, pk):
-        tables = cls.query("SELECT * FROM sqlite_master WHERE type='table'")
-        table_names = [tables[1] for table in tables]
-        if cls._TABLE not in table_names:
-            columns_for_bd_table = ""
-            for keys, val in cls._FIELDS_MAPPING.items():
-                columns_for_bd_table += keys + " " + wordbook_of_conformity.get(val) + ","
-            table_name = cls._TABLE
-            sql_sentence = "CREATE TABLE " + table_name + " (" + columns_for_bd_table[0:-1] + ")"
+    # '''создание таблице не из create_tables.sql'''
+    # def _create_mapping(cls, pk):
+    #     tables = cls.query("SELECT * FROM sqlite_master WHERE type='table'")
+    #     if tables != None:
+    #         table_names = [tables[1] for table in tables]
+    #     else:
+    #         table_names = None
+    #     if cls._TABLE not in table_names:
+    #         columns_for_bd_table = ""
+    #         for keys, val in cls._FIELDS_MAPPING.items():
+    #             columns_for_bd_table += keys + " " + wordbook_of_conformity.get(val) + ","
+    #         table_name = cls._TABLE
+    #         sql_sentence = "CREATE TABLE " + table_name + " (" + columns_for_bd_table[0:-1] + ")"
+    #         cls.query(sql_sentence)
+
+    @classmethod #create
+    def _create_record(cls, pk):
+        values_from_mapping = " "
+        for keys, val in cls.__dict__:
+            values_from_mapping += val + ","
+        sql_sentence = f"INSERT INTO {cls._TABLE}  VALUES ({values_from_mapping[0:-1]})"
+        cls.query(sql_sentence)
+
+    @classmethod #update
+    def _update_record(cls, pk, data):
+        "data - словарь, в котором содержится имя столбца и значение, которое в него надо вписать"
+        table_name = cls._TABLE
+        for key, val in data.items:
+            sql_sentence = f"UPDATE {table_name} SET {key} = {val} where id = {pk}  "
             cls.query(sql_sentence)
 
-    @classmethod
-    def _update_mapping(cls, pk):
-        values_from_mapping = " "
-        for keys, val in cls._FIELDS_MAPPING():
-            values_from_mapping += val + ","
-        sql_sentence = "INSERT INTO " + cls._TABLE +  " VALUES (" + values_from_mapping[0:-1] + ")"
+    @classmethod #read
+    def _read_record(cls,pk):
+        table_name = cls._TABLE
+        sql_sentence = f"SELECT * from {table_name} where id = {pk}"
+        cls.query(sql_sentence)
+
+    @classmethod #delete
+    def _delite_record(cls, pk):
+        table_name = cls._TABLE
+        sql_sentence = f"DELETE from {table_name} where id = {pk}"
         cls.query(sql_sentence)
 
     @classmethod
@@ -100,7 +123,7 @@ class BasicModel(sqlitemodel):
         в качестве входных данных предоставляется словарь
         данные вносятся, если проходится проверка по типу
         """
-        for key , val in data.items():
+        for key, val in data.items():
             if self._check_datatype_for_key(key,val):
                 self.__dict__[key] = val
 
@@ -118,3 +141,6 @@ class BasicModel(sqlitemodel):
         for key in self._FIELDS_MAPPING:
             inner_dict[key] = getattr(self, key)
         return inner_dict
+
+
+
