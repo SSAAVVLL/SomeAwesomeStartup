@@ -38,33 +38,35 @@ class sqlitemodel:
     #         sql_sentence = "CREATE TABLE " + table_name + " (" + columns_for_bd_table[0:-1] + ")"
     #         cls.query(sql_sentence)
 
-    @classmethod #create
-    def _create_record(cls, pk):
+    #@classmethod #create
+    def _create_record(self, pk):
         values_from_mapping = " "
-        for keys, val in cls.__dict__:
-            values_from_mapping += val + ","
-        sql_sentence = f"INSERT INTO {cls._TABLE}  VALUES ({values_from_mapping[0:-1]})"
-        cls.query(sql_sentence)
+        for keys, val in self.__dict__.items():
+            if keys in self._FIELDS_MAPPING.keys():
+                values_from_mapping += str(val) + ","
+        sql_sentence = f"INSERT INTO {self._TABLE}  VALUES ({values_from_mapping[0:-1]});"
+        print(sql_sentence)
+        self.query(sql_sentence)
 
-    @classmethod #update
-    def _update_record(cls, pk, data):
+    #@classmethod #update
+    def _update_record(self, pk, data):
         "data - словарь, в котором содержится имя столбца и значение, которое в него надо вписать"
-        table_name = cls._TABLE
-        for key, val in data.items:
+        table_name = self._TABLE
+        for key, val in data.items():
             sql_sentence = f"UPDATE {table_name} SET {key} = {val} where id = {pk}  "
-            cls.query(sql_sentence)
+            self.query(sql_sentence)
 
-    @classmethod #read
-    def _read_record(cls,pk):
-        table_name = cls._TABLE
+    #@classmethod #read
+    def _read_record(self, pk):
+        table_name = self._TABLE
         sql_sentence = f"SELECT * from {table_name} where id = {pk}"
-        cls.query(sql_sentence)
+        print(self.query(sql_sentence))
 
-    @classmethod #delete
-    def _delite_record(cls, pk):
-        table_name = cls._TABLE
+    #@classmethod #delete
+    def _delite_record(self, pk):
+        table_name = self._TABLE
         sql_sentence = f"DELETE from {table_name} where id = {pk}"
-        cls.query(sql_sentence)
+        self.query(sql_sentence)
 
     @classmethod
     def _get_by_pk(cls, pk):

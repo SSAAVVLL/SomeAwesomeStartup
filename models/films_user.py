@@ -13,4 +13,11 @@ something = films_user("BUBA")
 
 something.fill_data({"id": 1235, "user_id": 564, "film_id": 465})
 print(something.__dict__)
-something._create_record(getattr(something,"id"))
+pk = getattr(something, "id")
+print(pk)
+something._delite_record(pk)
+something._create_record(pk)
+something._update_record(pk, {"user_id": 6666})
+print(something.__dict__)
+something._read_record(pk)
+
