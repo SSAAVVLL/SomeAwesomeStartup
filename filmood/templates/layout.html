@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    {% if title %}
+        <title>FILMOOD - {{ title }}</title>
+    {% else %}
+        <title>FILMOOD</title>
+    {% endif %}
+</head>
+<body>
+    <div class="wrapper_content">
+        <nav>
+            <ul class="navigation">
+                <li><a href="{{ url_for('index') }}">Main page</a></li>
+                <li><a href="{{ url_for('team') }}">Our team</a></li>
+            </ul>
+        </nav>
+        {% block header %}{% endblock %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
