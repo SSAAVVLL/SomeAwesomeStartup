@@ -1,5 +1,6 @@
 from datetime import datetime
 from filmood import db
+from filmood.serialization import OutputMixin
 
 
 watched_films = db.Table(
@@ -19,7 +20,7 @@ film_genres = db.Table(
 )
 
 
-class User(db.Model):
+class User(db.Model, OutputMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
@@ -30,7 +31,7 @@ class User(db.Model):
     def __repr__(self):
         return f"User({self.username})"
 
-class Film(db.Model):
+class Film(db.Model, OutputMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=True, nullable=False)
     description = db.Column(db.String(1000), nullable=False)
@@ -44,16 +45,16 @@ class Film(db.Model):
         return f"Film({self.name})"
 
 
-class Genre(db.Model):
+class Genre(db.Model, OutputMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=True, nullable=False)
     
     def __repr__(self):
         return f"Genre({self.name})"
 
-class Mood(db.Model):
+class Mood(db.Model, OutputMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), unique=True, nullable=False)
     
     def __repr__(self):
-        return f"Mood({self.name})".
+        return f"Mood({self.name})"

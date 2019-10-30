@@ -6,3 +6,4 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///my.db'
 db = SQLAlchemy(app)
 
 from filmood import routes
+from filmood import crud
