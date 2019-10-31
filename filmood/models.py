@@ -1,6 +1,7 @@
 from datetime import datetime
 from filmood import db
 from filmood.serialization import OutputMixin
+from filmood.crud import CRUD
 
 
 watched_films = db.Table(
@@ -20,7 +21,7 @@ film_genres = db.Table(
 )
 
 
-class User(db.Model, OutputMixin):
+class User(db.Model, OutputMixin, CRUD):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
@@ -29,9 +30,9 @@ class User(db.Model, OutputMixin):
                             backref=db.backref('users', lazy=True))
 
     def __repr__(self):
-        return f"User({self.username})"
+        return f"User({self.username}, {self.email})"
 
-class Film(db.Model, OutputMixin):
+class Film(db.Model, OutputMixin, CRUD):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=True, nullable=False)
     description = db.Column(db.String(1000), nullable=False)
@@ -41,18 +42,20 @@ class Film(db.Model, OutputMixin):
     genres = db.relationship('Genre', secondary=film_genres, lazy='subquery',
                             backref=db.backref('films', lazy=True))
 
+    RELATIONSHIPS_TO_DICT = moods
+
     def __repr__(self):
         return f"Film({self.name})"
 
 
-class Genre(db.Model, OutputMixin):
+class Genre(db.Model, OutputMixin, CRUD):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=True, nullable=False)
     
     def __repr__(self):
         return f"Genre({self.name})"
 
-class Mood(db.Model, OutputMixin):
+class Mood(db.Model, OutputMixin, CRUD):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), unique=True, nullable=False)
     

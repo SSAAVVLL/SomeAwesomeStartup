@@ -1,51 +1,48 @@
-from filmood import app
 from filmood import db
-from filmood.models import User, Film, Genre, Mood
 from flask import request, abort
 
-@app.route('/api/1.0/film/<int:film_id>', methods=['GET'])
-def get_film(film_id):
-    film = Film.query.filter_by(id=film_id).first()
-    if film:
-        return film.to_json(film.moods)
-    abort(404)
+class CRUD:
+    @classmethod
+    def get(cls, id):
+        instance = cls.query.filter_by(id=id).first()
+        return instance.to_json() if instance else abort(404)
 
-@app.route('/api/1.0/film/<int:film_id>', methods=['DELETE'])
-def delete_film(film_id):
-    film = Film.query.filter_by(id=film_id).first()
-    if film:
-        db.session.delete(film)
+    @classmethod
+    def delete(cls, id):
+        instance = cls.query.filter_by(id=id).first()
+        if instance:
+            db.session.delete(instance)
+            db.session.commit()
+            return instance.to_json()
+        return abort(404)
+
+    @classmethod
+    def update(cls, id, params):
+        instance = cls.query.filter_by(id=id).first()
+        if not instance or not params:
+            abort(400)
+
+        for param in params:
+            if param not in cls.__mapper__.c:
+                abort(400)
+
+        cls.query.filter_by(id=id).update(params)
         db.session.commit()
-        return film.to_json(film.moods)
-    abort(404)
 
-@app.route('/api/1.0/film', methods=['POST'])
-def insert_film():
-    params = request.args
-    if not params and ('name' in params and 'description' in params) :
-        abort(400)
-    for param in params:
-        if param not in Film.__mapper__.c:
+        instance = cls.query.filter_by(id=id).first()
+        return instance.to_json()
+
+    @classmethod
+    def insert(cls, params):
+        if not params:
             abort(400)
 
-    film = Film(**params)
-    db.session.add(film)
-    db.session.commit()
-    return film.to_json()
+        for param in params:
+            if param not in cls.__mapper__.c:
+                abort(400)
 
+        instance = cls(**params)
+        db.session.add(instance)
+        db.session.commit()
 
-@app.route('/api/1.0/film/<int:film_id>', methods=['PUT'])
-def update_film(film_id):
-    params = request.args
-    film = Film.query.filter_by(id=film_id)
-    if not film or not params:
-        abort(400)
-
-    for param in params:
-        if param not in Film.__mapper__.c:
-            abort(400)
-
-    Film.query.filter_by(id=film_id).update(params)
-    film = Film.query.filter_by(id=film_id).first()
-    db.session.commit()
-    return film.to_json()
+        return instance.to_json()

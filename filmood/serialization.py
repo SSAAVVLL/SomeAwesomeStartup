@@ -1,7 +1,6 @@
 from datetime import datetime
 import json
 from uuid import UUID
-
 from sqlalchemy.ext.declarative import DeclarativeMeta
 
 
@@ -19,7 +18,7 @@ class OutputMixin(object):
         if rel:
             for attr, relation in self.__mapper__.relationships.items():
                 # Avoid recursive loop between to tables.
-                if backref == self.__tablename__:
+                if backref == rel.table:
                     continue
                 value = getattr(self, attr)
                 if value is None:
