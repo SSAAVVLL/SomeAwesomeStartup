@@ -34,15 +34,18 @@ class User(db.Model, OutputMixin, CRUD):
 
 class Film(db.Model, OutputMixin, CRUD):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=True, nullable=False)
-    description = db.Column(db.String(1000), nullable=False)
+    title = db.Column(db.String(20), unique=True, nullable=False)
+    overview = db.Column(db.String(2000), nullable=False)
     release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     moods = db.relationship('Mood', secondary=film_moods, lazy='subquery',
                             backref=db.backref('films', lazy=True))
     genres = db.relationship('Genre', secondary=film_genres, lazy='subquery',
                             backref=db.backref('films', lazy=True))
-
-    RELATIONSHIPS_TO_DICT = moods
+    runtime = db.Column(db.String(5), nullable=False)
+    backdrop_path = db.Column(db.String(100), nullable=True)
+    poster_path = db.Column(db.String(100), nullable=True)
+    imdb_id = db.Column(db.String(100), nullable=True)
+    vote_average = db.Column(db.String(5), nullable=True)
 
     def __repr__(self):
         return f"Film({self.name})"
