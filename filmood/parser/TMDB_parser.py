@@ -16,7 +16,7 @@ cur_id = last_id
 # cur_id = 1
 amount_of_films = len(Film.query.all())
 
-while amount_of_films < 10000:
+while amount_of_films < 2000:
     try:
         movie_info = tmdb.Movies(cur_id).info()
         film = Film(
@@ -35,7 +35,7 @@ while amount_of_films < 10000:
             if find_genre:
                 film.genres.append(find_genre)
             else:
-                new_genre = Genre(name=genre['name'])exit
+                new_genre = Genre(name=genre['name'])
                 film.genres.append(new_genre)
         db.session.add(film)
         db.session.commit()
