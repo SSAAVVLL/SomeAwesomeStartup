@@ -1,4 +1,3 @@
-from datetime import datetime
 from filmood import db
 from filmood.serialization import OutputMixin
 from filmood.crud import CRUD
@@ -34,9 +33,9 @@ class User(db.Model, OutputMixin, CRUD):
 
 class Film(db.Model, OutputMixin, CRUD):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(20), unique=True, nullable=False)
+    title = db.Column(db.String(20), nullable=False)
     overview = db.Column(db.String(2000), nullable=False)
-    release_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    release_date = db.Column(db.DateTime, nullable=False)
     moods = db.relationship('Mood', secondary=film_moods, lazy='subquery',
                             backref=db.backref('films', lazy=True))
     genres = db.relationship('Genre', secondary=film_genres, lazy='subquery',
@@ -48,7 +47,7 @@ class Film(db.Model, OutputMixin, CRUD):
     vote_average = db.Column(db.String(5), nullable=True)
 
     def __repr__(self):
-        return f"Film({self.name})"
+        return f"Film({self.title}, {self.release_date}, {self.genres}, {self.vote_average})"
 
 
 class Genre(db.Model, OutputMixin, CRUD):
