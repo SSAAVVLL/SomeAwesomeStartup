@@ -16,7 +16,7 @@ cur_id = last_id
 # cur_id = 1
 amount_of_films = len(Film.query.all())
 
-target_amounts = [int(5100+100*x) for x in range(60)]
+target_amounts = [int(9700+100*x) for x in range(60)]
 
 
 
@@ -45,7 +45,10 @@ for target_i in target_amounts:
             try:
                 db.session.add(film)
                 db.session.commit()
-            except
+            except Exception:
+                db.session.rollback()
+                db.logger.error('...')
+
             amount_of_films += 1
 
         except Exception as err:
