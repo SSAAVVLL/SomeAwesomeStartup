@@ -10,13 +10,13 @@ from filmood import db
 api_key = '765b0d1f4ca8757f641c2f8e9c95c05f'
 tmdb.API_KEY = api_key
 
-with open('filmood/parser/last_id_on_tmdb.txt', 'r') as file:
+with open('last_id_on_tmdb.txt', 'r') as file:
     last_id = int(file.read())
 cur_id = last_id
 # cur_id = 1
 amount_of_films = len(Film.query.all())
 
-while amount_of_films < 2000:
+while amount_of_films < 4000:
     try:
         movie_info = tmdb.Movies(cur_id).info()
         film = Film(
@@ -46,6 +46,6 @@ while amount_of_films < 2000:
 
     print(cur_id, amount_of_films)
     cur_id += 1
-    with open('filmood/parser/last_id_on_tmdb.txt', 'w') as file:
+    with open('last_id_on_tmdb.txt', 'w') as file:
         file.write(str(cur_id))
 
