@@ -16,36 +16,43 @@ cur_id = last_id
 # cur_id = 1
 amount_of_films = len(Film.query.all())
 
-while amount_of_films < 4000:
-    try:
-        movie_info = tmdb.Movies(cur_id).info()
-        film = Film(
-            title = movie_info['title'],
-            release_date = datetime.strptime(movie_info['release_date'], '%Y-%m-%d'),
-            runtime = movie_info['runtime'],
-            backdrop_path = movie_info['backdrop_path'],
-            poster_path = movie_info['poster_path'],
-            imdb_id = movie_info['imdb_id'],
-            overview = movie_info['overview'],
-            vote_average = movie_info['vote_average']
-        )
+target_amounts = [int(5100+100*x) for x in range(60)]
 
-        for genre in movie_info['genres']:
-            find_genre = Genre.query.filter_by(name=genre['name']).first()
-            if find_genre:
-                film.genres.append(find_genre)
-            else:
-                new_genre = Genre(name=genre['name'])
-                film.genres.append(new_genre)
-        db.session.add(film)
-        db.session.commit()
-        amount_of_films += 1
 
-    except Exception as err:
-        print(err)
 
-    print(cur_id, amount_of_films)
-    cur_id += 1
-    with open('last_id_on_tmdb.txt', 'w') as file:
-        file.write(str(cur_id))
+for target_i in target_amounts:
+    while amount_of_films < target_i:
+        try:
+            movie_info = tmdb.Movies(cur_id).info()
+            film = Film(
+                title = movie_info['title'],
+                release_date = datetime.strptime(movie_info['release_date'], '%Y-%m-%d'),
+                runtime = movie_info['runtime'],
+                backdrop_path = movie_info['backdrop_path'],
+                poster_path = movie_info['poster_path'],
+                imdb_id = movie_info['imdb_id'],
+                overview = movie_info['overview'],
+                vote_average = movie_info['vote_average']
+            )
+
+            for genre in movie_info['genres']:
+                find_genre = Genre.query.filter_by(name=genre['name']).first()
+                if find_genre:
+                    film.genres.append(find_genre)
+                else:
+                    new_genre = Genre(name=genre['name'])
+                    film.genres.append(new_genre)
+            try:
+                db.session.add(film)
+                db.session.commit()
+            except
+            amount_of_films += 1
+
+        except Exception as err:
+            print(err)
+
+        print(cur_id, amount_of_films)
+        cur_id += 1
+        with open('last_id_on_tmdb.txt', 'w') as file:
+            file.write(str(cur_id))
 
