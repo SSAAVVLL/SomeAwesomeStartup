@@ -16,7 +16,7 @@ cur_id = last_id
 # cur_id = 1
 amount_of_films = len(Film.query.all())
 
-target_amounts = [int(9700+100*x) for x in range(60)]
+target_amounts = [int(9900+100*x) for x in range(60)]
 
 
 
