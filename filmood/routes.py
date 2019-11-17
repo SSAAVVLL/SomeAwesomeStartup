@@ -79,3 +79,16 @@ def process_request_mood(id):
 def insert_mood():
     params = request.args
     return Mood.insert(params)
+
+
+@app.route('/auth/register', methods=['POST'])
+def register():
+    if request.method == 'POST':
+        params = request.args
+        print(params)
+        return '123123'
+
+@app.route('/auth/signin', methods=['POST'])
+def signin():
+
+    pass
