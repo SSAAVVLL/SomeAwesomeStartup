@@ -18,3 +18,11 @@ We want to simplify the process of choosing a film and make it personalized and 
 - Pervenenok Alice
 - Romasev Eric
 - Kolbeko Alexander
+
+## Roadmap
+| Date       | Task                                      |
+| ---------- | :---------------------------------------: |
+| 14.11.2019 | CRUD, Parsing films dbs                   |
+| 21.11.2019 | Parsing comments db                       |
+| 25.11.2019 | Use machine learning for define film mood |
+| 15.12.2019 | Registartion, authorizations              |
