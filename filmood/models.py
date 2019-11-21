@@ -60,6 +60,15 @@ class Genre(db.Model, OutputMixin, CRUD):
 class Mood(db.Model, OutputMixin, CRUD):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(30), unique=True, nullable=False)
-    
+
     def __repr__(self):
         return f"Mood({self.name})"
+
+class Comment(db.Model, OutputMixin, CRUD):
+    id = db.Column(db.Integer, primary_key=True)
+    id_film = db.Column(db.Integer)
+    text = db.Column(db.String(2500))
+
+    def __repr__(self):
+        return f"Comment({self.name})"
+
