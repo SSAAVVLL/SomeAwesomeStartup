@@ -5,11 +5,11 @@ class CRUD:
     @classmethod
     def get(cls, id):
         """
-        This function take
+        This function back record from DB by PK
 
         Parameters:
         ----------
-        cls: entity with which will be the subject of action
+        cls: entity which will be used in action
         id: PK of target record on DB
 
         Returns:
@@ -28,6 +28,25 @@ class CRUD:
 
     @classmethod
     def delete(cls, id):
+        """
+            This function delete record from DB by PK
+
+            Parameters:
+             ----------
+             cls: entity which will be used in action
+             id: PK of target record on DB
+
+             Returns:
+             ---------
+             String
+                 if record has being deleted, returns instance in
+                 json interpretation
+
+            Raises
+            ---------
+            KeyError
+                raise Error 404 if record not exist
+        """
         instance = cls.query.filter_by(id=id).first()
         if instance:
             db.session.delete(instance)
@@ -37,6 +56,26 @@ class CRUD:
 
     @classmethod
     def update(cls, id, params):
+        """
+            This function update record in DB by PK
+
+            Parameters:
+            ----------
+            cls: entity which will be used in action
+            id: PK of target record on DB
+            params: PLEASE STAND BY
+
+            Returns:
+            ---------
+            String
+                if record has being updated, returns instance in
+                json interpretation
+
+            Raises
+            ---------
+            KeyError
+                raise Error 400 if record not exist or received not marked in mapping argument
+        """
         instance = cls.query.filter_by(id=id).first()
         if not instance or not params:
             abort(400)
@@ -53,6 +92,25 @@ class CRUD:
 
     @classmethod
     def insert(cls, params):
+        """
+            This function insert record to DB
+
+            Parameters:
+             ----------
+             cls: entity which will be used in action
+             params: PLEASE STAND BY
+
+             Returns:
+             ---------
+             String
+                 if record has being inserted, returns instance in
+                 json interpretation
+
+            Raises
+            ---------
+            KeyError
+                raise Error 400 if received arguments not given or stem not marked in entity mapping
+        """
         if not params:
             abort(400)
 
