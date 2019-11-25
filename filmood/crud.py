@@ -4,6 +4,25 @@ from flask import request, abort
 class CRUD:
     @classmethod
     def get(cls, id):
+        """
+        This function take
+
+        Parameters:
+        ----------
+        cls: entity with which will be the subject of action
+        id: PK of target record on DB
+
+        Returns:
+        ---------
+        String
+            if record has being founded, returns instance in
+            json interpretation
+
+        Raises
+        ---------
+        KeyError
+            raise Error 404 if record not exist
+        """
         instance = cls.query.filter_by(id=id).first()
         return instance.to_json() if instance else abort(404)
 
