@@ -1,6 +1,5 @@
 from filmood import db
-from filmood.serialization import OutputMixin
-from filmood.crud import CRUD
+from filmood.api.crud import CRUD
 
 
 watched_films = db.Table(
@@ -20,7 +19,7 @@ film_genres = db.Table(
 )
 
 
-class User(db.Model, OutputMixin, CRUD):
+class User(db.Model, CRUD):
     """
     This entity represent table which contain users
 
@@ -36,14 +35,14 @@ class User(db.Model, OutputMixin, CRUD):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     films = db.relationship('Film', secondary=watched_films, lazy='subquery',
-                            backref=db.backref('user    s', lazy=True))
+                            backref=db.backref('user', lazy=True))
 
     def __repr__(self):
         return f"User({self.username}, {self.email})"
 
-class Film(db.Model, OutputMixin, CRUD):
+class Film(db.Model, CRUD):
     """
     This entity represent table which contain films
 
@@ -62,24 +61,25 @@ class Film(db.Model, OutputMixin, CRUD):
     vote_average: something useless statistic from TMDB.com
     """
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(20), nullable=False)
+    title = db.Column(db.String(50), nullable=False)
     overview = db.Column(db.String(2000), nullable=False)
     release_date = db.Column(db.DateTime, nullable=False)
+    runtime = db.Column(db.String(10))
+    backdrop_path = db.Column(db.String(100))
+    poster_path = db.Column(db.String(100))
+    imdb_id = db.Column(db.String(100))
+    vote_average = db.Column(db.String(5))
     moods = db.relationship('Mood', secondary=film_moods, lazy='subquery',
                             backref=db.backref('films', lazy=True))
     genres = db.relationship('Genre', secondary=film_genres, lazy='subquery',
                             backref=db.backref('films', lazy=True))
-    runtime = db.Column(db.String(5), nullable=False)
-    backdrop_path = db.Column(db.String(100), nullable=True)
-    poster_path = db.Column(db.String(100), nullable=True)
-    imdb_id = db.Column(db.String(100), nullable=True)
-    vote_average = db.Column(db.String(5), nullable=True)
+    
 
     def __repr__(self):
-        return f"Film({self.title}, {self.release_date}, {self.genres}, {self.vote_average})"
+        return f"Film({self.title}, {self.release_date}, {self.genres}, {self.moods}, {self.vote_average})"
 
 
-class Genre(db.Model, OutputMixin, CRUD):
+class Genre(db.Model, CRUD):
     """
     This entity represent table which contain film's genres
 
@@ -89,12 +89,12 @@ class Genre(db.Model, OutputMixin, CRUD):
     name: title of this genre
     """
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
     
     def __repr__(self):
         return f"Genre({self.name})"
 
-class Mood(db.Model, OutputMixin, CRUD):
+class Mood(db.Model, CRUD):
     """
     This entity represent table which contain moods
 
@@ -104,7 +104,16 @@ class Mood(db.Model, OutputMixin, CRUD):
     name: title of this mood
     """
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(30), unique=True, nullable=False)
+    name = db.Column(db.String(50), unique=True, nullable=False)
     
     def __repr__(self):
         return f"Mood({self.name})"
+
+class Comment(db.Model, CRUD):
+    id = db.Column(db.Integer, primary_key=True)
+    film_id = db.Column(db.Integer, db.ForeignKey("film.id"))
+    film = db.relationship("Film", backref=db.backref("comments", lazy=True))
+    content = db.Column(db.String(2500))
+
+    def __repr__(self):
+        return f"Comment({self.content}, {self.film_id})"
