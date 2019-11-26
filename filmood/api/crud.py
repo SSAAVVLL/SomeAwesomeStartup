@@ -4,50 +4,33 @@ from flask import request, abort
 class CRUD:
     @classmethod
     def get(cls, id):
-        """
-        This function back record from DB by PK
+        """Get instance of entity by id.
 
-        Parameters:
-        ----------
-        cls: entity which will be used in action
-        id: PK of target record on DB
+        Args:
+            cls: class of the entity.
+            id (int): id of instance.
 
         Returns:
-        ---------
-        String
-            if record has being founded, returns instance in
-            json interpretation
+            obj: If instance has been found, return it.
 
-        Raises
-        ---------
-        KeyError
-            raise Error 404 if record not exist
+        Raises:
+            ValidationError: If instance hasn't been found.
         """
         instance = cls.query.filter_by(id=id).first()
         if instance:
-            return instance 
-        raise ValidationError('Wrong id was given') 
+            return instance
+        raise ValidationError('Wrong id was given')
 
     @classmethod
     def delete(cls, id):
-        """
-            This function delete record from DB by PK
+        """Delete instance of entity by id.
 
-            Parameters:
-             ----------
-             cls: entity which will be used in action
-             id: PK of target record on DB
+            Args:
+                cls: class of the entity.
+                id (int): id of instance.
 
-             Returns:
-             ---------
-             String
-                 if record has being deleted, returns instance in
-                 json interpretation
-
-            Raises
-            ---------
-            KeyError
-                raise Error 404 if record not exist
+            Returns:
+                obj: If instance has been found, delete and return it.
         """
         instance = cls.get(id)
         db.session.delete(instance)
@@ -56,25 +39,18 @@ class CRUD:
 
     @classmethod
     def update(cls, id, **params):
-        """
-            This function update record in DB by PK
+        """Update instance of entity by id.
 
-            Parameters:
-            ----------
-            cls: entity which will be used in action
-            id: PK of target record on DB
-            params: PLEASE STAND BY
+            Args:
+                cls: class of the entity.
+                id (int): id of instance.
+                **params: keyword params of instance of entity that must be updated.
 
             Returns:
-            ---------
-            String
-                if record has being updated, returns instance in
-                json interpretation
+                obj: updated instance of entity.
 
-            Raises
-            ---------
-            KeyError
-                raise Error 400 if record not exist or received not marked in mapping argument
+            Raises:
+                ValidationError: If given data was invalid.
         """
         instance = cls.get(id)
         cls.validate_params(params)
@@ -91,24 +67,17 @@ class CRUD:
 
     @classmethod
     def insert(cls, **params):
-        """
-            This function insert record to DB
+        """Insert instance of entity
 
-            Parameters:
-             ----------
-             cls: entity which will be used in action
-             params: PLEASE STAND BY
+            Args:
+                cls: class of the entity.
+                **params: keyword params of instance of entity that must be updated.
 
-             Returns:
-             ---------
-             String
-                 if record has being inserted, returns instance in
-                 json interpretation
+            Returns:
+                obj: inserted instance of entity.
 
-            Raises
-            ---------
-            KeyError
-                raise Error 400 if received arguments not given or stem not marked in entity mapping
+            Raises:
+                ValidationError: If given data was invalid.
         """
         cls.validate_params(params)
         
@@ -118,15 +87,25 @@ class CRUD:
             db.session.commit()
         except IntegrityError:
             db.session.rollback()
-            raise ValidationError('Invalid data was given') 
+            raise ValidationError('Invalid data was given')
 
         return instance
 
     @classmethod
     def validate_params(cls, params):
+        """Check are there params and are they valid.
+
+        Args:
+            cls: class of the entity.
+            params (dict): dict of params.
+
+        Raises:
+            ValidationError: If there are no params or given params are wrong.
+        """
         if not params:
             raise ValidationError('Params were not given') 
             
         for param in params:
             if param not in cls.__mapper__.c and param not in cls.__mapper__.relationships:
                 raise ValidationError('Wrong params were given')
+

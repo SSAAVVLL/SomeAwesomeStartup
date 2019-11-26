@@ -20,18 +20,6 @@ film_genres = db.Table(
 
 
 class User(db.Model, CRUD):
-    """
-    This entity represent table which contain users
-
-    Attributes:
-    ----------
-    id: this user id
-    username: login of this user
-    email: user's email address
-    password: user's password
-    films: contain relationship between user and watched films
-    """
-
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
@@ -43,23 +31,6 @@ class User(db.Model, CRUD):
         return f"User({self.username}, {self.email})"
 
 class Film(db.Model, CRUD):
-    """
-    This entity represent table which contain films
-
-    Attributes:
-    ----------
-    id: this film id
-    title: title of this film
-    overview: is a brief description of the film
-    release_date: film release date
-    moods: contain relationship between film and his moods
-    genres: contain relationship between film and his genres
-    runtime: information abouts film runtime
-    backdrop_path : idk
-    poster_path: contain path to films poster on TMDB.com
-    imdb_id: contain path to this film on IMDB.com
-    vote_average: something useless statistic from TMDB.com
-    """
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(50), nullable=False)
     overview = db.Column(db.String(2000), nullable=False)
@@ -80,14 +51,6 @@ class Film(db.Model, CRUD):
 
 
 class Genre(db.Model, CRUD):
-    """
-    This entity represent table which contain film's genres
-
-    Attributes:
-    ----------
-    id: this genre id
-    name: title of this genre
-    """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     
@@ -95,14 +58,6 @@ class Genre(db.Model, CRUD):
         return f"Genre({self.name})"
 
 class Mood(db.Model, CRUD):
-    """
-    This entity represent table which contain moods
-
-    Attributes:
-    ----------
-    id: this mood id
-    name: title of this mood
-    """
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
     

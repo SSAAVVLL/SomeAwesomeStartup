@@ -8,6 +8,20 @@ from filmood.api.schemas import *
 
 
 def handle_request(id, request, schema, entity):
+    """Handle GET, DELETE and PUT requests.
+
+    Args:
+        id (int): id of the instance of the given entity.
+        requset: received request.
+        schema: entity's schema.
+        entity: entity's class.
+
+    Returns:
+        str: JSON formated answer.
+
+    Raises:
+        ValidationError: If given data was invalid.
+    """
     try:
         if request.method == 'GET':
             return schema().dump(entity.get(id))
@@ -22,6 +36,19 @@ def handle_request(id, request, schema, entity):
         return {'error_messages': json.dumps(err.messages)}, 422
 
 def handle_insert_request(request, schema, entity):
+    """Handle POST requests.
+
+    Args:
+        requset: received request.
+        schema: entity's schema.
+        entity: entity's class.
+
+    Returns:
+        str: JSON formated answer.
+
+    Raises:
+        ValidationError: If given data was invalid.
+    """
     if not request.args:
         return {'error_messages': "No input data provided"}, 400
     try:
