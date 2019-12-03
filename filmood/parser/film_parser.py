@@ -2,21 +2,22 @@ import tmdbsimple as tmdb
 from datetime import datetime
 from filmood.models import *
 from filmood import db
+import json
 
-'''https://www.pydoc.io/pypi/tmdbsimple-1.8.0/'''
-'''OMDB'''
 
 tmdb.API_KEY = '765b0d1f4ca8757f641c2f8e9c95c05f'
 
-with open('last_id_on_tmdb.txt', 'r') as file:
-    last_id = int(file.read())
-cur_id = last_id
+# cur_id = json.load(open('filmood/parser/last_film_id.json', 'r'))["last_id"]
+cur_id = 1
+valid_film_ids = [json.loads(line)["id"] for line in open(
+    'filmood/parser/movie_ids_11_26_2019.json', 'r',  encoding='utf-8')]
 
-amount_of_films = len(Film.query.all())
+amount_of_films = 0
+# amount_of_films = len(Film.query.all())
 
-while amount_of_films < 10000:
+while amount_of_films < 50000:
     try:
-        movie_info = tmdb.Movies(cur_id).info()
+        movie_info = tmdb.Movies(valid_film_ids[cur_id]).info()
         film = Film(
             title = movie_info['title'],
             release_date = datetime.strptime(movie_info['release_date'], '%Y-%m-%d'),
@@ -44,8 +45,7 @@ while amount_of_films < 10000:
     except Exception as err:
         print(err)
 
-    print(cur_id, amount_of_films)
+    print(cur_id)
     cur_id += 1
-    with open('last_id_on_tmdb.txt', 'w') as file:
-        file.write(str(cur_id))
-
+    # with open('filmood/parser/last_film_id.json', 'w') as file:
+    #     file.write(json.dumps({"last_id": cur_id}))

@@ -1,5 +1,6 @@
 from filmood import db
-from flask import request, abort
+from sqlalchemy.exc import IntegrityError
+from marshmallow import ValidationError
 
 class CRUD:
     @classmethod

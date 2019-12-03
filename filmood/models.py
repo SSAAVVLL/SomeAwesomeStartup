@@ -32,14 +32,14 @@ class User(db.Model, CRUD):
 
 class Film(db.Model, CRUD):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(50), nullable=False)
+    title = db.Column(db.String(200), nullable=False)
     overview = db.Column(db.String(2000), nullable=False)
     release_date = db.Column(db.DateTime, nullable=False)
-    runtime = db.Column(db.String(10))
-    backdrop_path = db.Column(db.String(100))
-    poster_path = db.Column(db.String(100))
-    imdb_id = db.Column(db.String(100))
-    vote_average = db.Column(db.String(5))
+    runtime = db.Column(db.String(20))
+    backdrop_path = db.Column(db.String(200))
+    poster_path = db.Column(db.String(200))
+    imdb_id = db.Column(db.String(200))
+    vote_average = db.Column(db.String(10))
     moods = db.relationship('Mood', secondary=film_moods, lazy='subquery',
                             backref=db.backref('films', lazy=True))
     genres = db.relationship('Genre', secondary=film_genres, lazy='subquery',
@@ -52,14 +52,14 @@ class Film(db.Model, CRUD):
 
 class Genre(db.Model, CRUD):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(100), unique=True, nullable=False)
     
     def __repr__(self):
         return f"Genre({self.name})"
 
 class Mood(db.Model, CRUD):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), unique=True, nullable=False)
+    name = db.Column(db.String(100), unique=True, nullable=False)
     
     def __repr__(self):
         return f"Mood({self.name})"
@@ -68,7 +68,7 @@ class Comment(db.Model, CRUD):
     id = db.Column(db.Integer, primary_key=True)
     film_id = db.Column(db.Integer, db.ForeignKey("film.id"))
     film = db.relationship("Film", backref=db.backref("comments", lazy=True))
-    content = db.Column(db.String(2500))
+    content = db.Column(db.String(20000))
 
     def __repr__(self):
         return f"Comment({self.content}, {self.film_id})"
