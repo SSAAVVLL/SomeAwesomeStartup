@@ -31,7 +31,7 @@ def handle_request(id, request, schema, entity):
             if not request.args:
                 return {'error_messages': "No input data provided"}, 400
             params = request.args
-            return schema().dump(entity.update(id, **params))
+            return schema().dump(entity.update(id, **params)), 200
     except ValidationError as err:
         return {'error_messages': json.dumps(err.messages)}, 422
 
@@ -54,7 +54,7 @@ def handle_insert_request(request, schema, entity):
     try:
         params = request.args
         schema().load(params)
-        return schema().dump(entity.insert(**params))
+        return schema().dump(entity.insert(**params)), 201
     except ValidationError as err:
         return {'error_messages': json.dumps(err.messages)}, 400
 
@@ -74,7 +74,7 @@ def handle_request_film(id):
         if (params.get("release_date")):
             params["release_date"] = datetime.strptime(params["release_date"], "%Y-%m-%d")
         try:
-            return FilmSchema().dump(Film.update(id, **params))
+            return FilmSchema().dump(Film.update(id, **params)), 200
         except ValidationError as err:
             return {'error_messages': json.dumps(err.messages)}, 422
 
@@ -88,7 +88,7 @@ def insert_film():
         params = request.args.copy()
         FilmSchema().load(params)
         params["release_date"] = datetime.strptime(params["release_date"], "%Y-%m-%d")
-        return FilmSchema().dump(Film.insert(**params))
+        return FilmSchema().dump(Film.insert(**params)), 201
     except ValidationError as err:
         return {'error_messages': json.dumps(err.messages)}, 400
 

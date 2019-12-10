@@ -10,7 +10,8 @@ watched_films = db.Table(
 film_moods = db.Table(
     'film_moods',
     db.Column('film_id', db.Integer, db.ForeignKey('film.id'), primary_key=True),
-    db.Column('mood_id', db.Integer, db.ForeignKey('mood.id'), primary_key=True)
+    db.Column('mood_id', db.Integer, db.ForeignKey('mood.id'), primary_key=True),
+    db.Column('value', db.Float, nullable=False)
 )
 film_genres = db.Table(
     'film_genres',
