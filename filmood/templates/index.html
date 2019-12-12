@@ -1,21 +1,84 @@
 {% extends 'layout.html' %}
 
-{% block header %}
-  <h1>FILMOOD - Choose correct film to your mood</h1>
+{% block content %}
+<div id="intro">
+    <h1 class="logo"><a href="{{ url_for('index') }}">FILMOOD</a></h1>
+    <h2>Films for the way you feel</h2>
+    <p class="subline">Choose the mood </p>
+</div>
+
+<div class="row moods justify-content-center text-center p-4">
+    <div class="col-md-1 mood justify-content-center p-4">
+        <a href="/films?moods=1">
+            <span class='emoji'>&#128522;</span>
+            <span>Joy</span>
+        </a>
+    </div>
+    <div class="col-md-1 mood justify-content-center p-4">
+        <a href="/films?moods=2">
+            <span class='emoji'>&#128546;</span>
+            <span>Sadness</span>
+        </a>
+    </div>
+    <div class="col-md-1 mood justify-content-center p-4">
+        <a href="/films?moods=3">
+            <span class='emoji'>&#128561;</span>
+            <span>Fear</span>
+        </a>
+    </div>
+    <div class="col-md-1 mood justify-content-center p-4">
+        <a href="/films?moods=4">
+            <span class='emoji'>&#128562;</span>
+            <span>Wonder</span>
+        </a>
+    </div>
+    <div class="col-md-1 mood justify-content-center p-4">
+        <a href="/films?moods=5">
+            <span class='emoji'>&#128525;</span>
+            <span>Romantic</span>
+        </a>
+    </div>
+    <div class="col-md-1 mood justify-content-center p-4">
+        <a href="/films?moods=6">
+            <span class='emoji'>&#128560;</span>
+            <span>Suspense</span>
+        </a>
+    </div>
+    <div class="col-md-1 mood justify-content-center p-4">
+        <a href="/films?moods=7">
+            <span class='emoji'>&#129300;</span>
+            <span>Inspiration</span>
+        </a>
+    </div>
+</div>
+    
+    
+<div class="row">
+    {% if films: %}
+        {% for film in films: %}
+        <div class="col-md-3 col-sm-6 col-xs-6 item">
+            <a class="imdb-link" href="{{ film.imdb_link }}" target="blank">
+                <div class="poster">
+                    <span class="vote">{{ film.vote_average }}</span>
+                    <img src="{{ film.poster }}" alt="">
+                </div>
+                <div class="info">
+                    <h5 class="title">{{ film.title }}</h5>
+                </div>
+            </a> 
+            <div class="row film-moods justify-content-center">
+                {% for film_mood in films_moods[film.id]: %}
+                <div class="film-mood col-3">
+                    <span class="mini-emoji">{{ films_emojis[film.id][film_mood.mood_id] }}</span>
+                    <span class="mood-name">{{ film_mood.value * 100 // 1}}%</span>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
 {% endblock %}
 
-{% block content %}
-  <div class="content">
-    <p class="emodji">&#128557;</p>
-    <p class="emodji">&#128552;</p>
-    <p class="emodji">&#128545;</p>
-    <p class="emodji">&#128526;</p>
-    <p class="emodji">&#128525;</p>
-    <p class="emodji">&#128513;</p>
-    <p class="emodji">&#129297;</p>
-  </div>
-  <div class="wrapper_btn">
-    <div>Let's try to pick up film for you</div>
-    <button class="btn">Pick up</button>
-  </div>
-{% endblock %}
+            

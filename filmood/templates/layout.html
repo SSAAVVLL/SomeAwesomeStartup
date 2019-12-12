@@ -1,27 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    {% if title %}
-        <title>FILMOOD - {{ title }}</title>
-    {% else %}
-        <title>FILMOOD</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    {% if cur_emoji: %}
+        <title>Filmood - {{ cur_emoji }}</title>
+    {% else: %}
+    <title>Filmood - Home</title>
     {% endif %}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='img/favicon-32x32.png') }}">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/plugins.css') }}">
+    <link rel="stylesheet"  href="{{ url_for('static', filename='css/main.css') }}">     
 </head>
 <body>
-    <div class="wrapper_content">
-        <nav>
-            <ul class="navigation">
-                <li><a href="{{ url_for('index') }}">Main page</a></li>
-                <li><a href="{{ url_for('team') }}">Our team</a></li>
-            </ul>
-        </nav>
-        {% block header %}{% endblock %}
-        {% block content %}{% endblock %}
+    <div class="preloader">
+        <div class="spinner"></div>
     </div>
+
+
+    <!-- MAIN CONTAINER -->
+    <div id="container-main">
+
+        {% block content %}{% endblock %}
+
+        <footer>
+            <div class="row">
+                <div class="col-md-4  text-left">
+                    <p>© 2019 Filmood</p>
+                </div>
+                <div class="col-md-8  text-right">
+                    <ul class="social-icons">
+                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <!-- /MAIN CONTAINER -->
+
+
+    <!-- BACKGROUND CONTENT -->
+    <div class="background-content parallax-on">
+        <div class="background-content-inner">
+
+            <div class="background-overlay"></div>
+            <div class="background-img layer" data-depth="0.1"></div>
+
+        </div>
+    </div>
+    <!-- /BACKGROUND CONTENT -->
+
+    <!-- JAVASCRIPTS -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/plugins.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

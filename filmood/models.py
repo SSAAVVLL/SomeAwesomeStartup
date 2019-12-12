@@ -45,6 +45,22 @@ class Film(db.Model, CRUD):
                             backref=db.backref('films', lazy=True))
     genres = db.relationship('Genre', secondary=film_genres, lazy='subquery',
                             backref=db.backref('films', lazy=True))
+
+    @property
+    def poster(self):
+        poster_size = 'w342' #"w92", "w154", "w185", "w342", "w500", "w780", "original"
+        poster_url = f'http://image.tmdb.org/t/p/{poster_size}'
+        return poster_url + self.poster_path
+
+    @property
+    def imdb_link(self):
+        imdb_url = 'https://www.imdb.com/title/'
+        return imdb_url + self.imdb_id
+        
+    @property
+    def date(self):
+        return self.release_date.strftime('%d-%m-%Y')
+
     
 
     def __repr__(self):
