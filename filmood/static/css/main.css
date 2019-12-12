@@ -350,7 +350,24 @@ a:focus
     font-weight: 400;
 }
 
-
+.pages 
+{
+    margin-top: 2rem;
+}
+a.page 
+{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    font-size: 2rem;
+    line-height: 40px;
+    border-radius: 5px;
+    border: 1px solid #fff;
+}
+a.page.active, a.page:hover
+{
+    font-weight: bold;
+}
 /**  Footer
 *******************************************************************/
 

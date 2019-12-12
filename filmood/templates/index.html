@@ -78,6 +78,13 @@
         {% endfor %}
     {% endif %}
 </div>
+<div class="row">
+    <div class="col-12 text-center pages">
+        {% for i in range(1, 6):%}
+            <a class="page {% if i == page: %}{{ 'active' }}{% endif %}" href="films?moods={{ films_moods[films[0].id][0].mood_id }}&page={{ i }}">{{ i }}</a>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock %}
 

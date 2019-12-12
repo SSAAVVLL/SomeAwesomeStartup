@@ -3,6 +3,7 @@ from filmood import app
 from filmood.models import *
 from marshmallow import ValidationError
 import json
+import random
 
 
 @app.route('/')
@@ -47,13 +48,13 @@ def films():
                 i += 3
             else:
                 i += 1
-            
+            random.shuffle(films)
             
             
             
 
-        return render_template('index.html', films=films, 
-            films_moods=films_moods, films_emojis=films_emojis, cur_emoji=mood_emoji[mood_id - 1]) 
+        return render_template('index.html', films=films, films_moods=films_moods, 
+            films_emojis=films_emojis, cur_emoji=mood_emoji[mood_id - 1], page=page_num) 
     return render_template('index.html')
 
 
